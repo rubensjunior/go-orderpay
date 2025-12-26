@@ -29,12 +29,31 @@
     {
       "name": "Development",
       "remoteURL": "http://localhost:3000/",
-      "access": "local",
       "targetType": "wappler",
       "databaseConnectionType": "sqlite",
       "sqliteDbFile": "/db/db_dev.sqlite3"
+    },
+    {
+      "name": "Dev web",
+      "remoteURL": "https://go.orderpay.com.br",
+      "access": "ftp",
+      "databaseConnectionType": "custom",
+      "webServerLang": "node",
+      "NodeVersion": "20",
+      "NodeOS": "alpine",
+      "databaseType": "postgres",
+      "db_host": "aws-1-sa-east-1.pooler.supabase.com",
+      "db_port": "6543",
+      "db_user": "postgres.pvqarzmgbiilpgifehgj",
+      "db_password": "@Recursos#025@",
+      "db_database": "postgres",
+      "webServerPort": 8100,
+      "ftpServer": "ftp.rubensbentes.com.br",
+      "ftpUser": "master@go.marketops.com.br",
+      "ftpPassword": "v2:5c66f57b0123bba8efded2143fe0d7b91dbd78258cb72118"
     }
   ],
   "activeTarget": "Development",
-  "projectType": "web"
+  "projectType": "web",
+  "extensions": []
 }
