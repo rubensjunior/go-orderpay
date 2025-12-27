@@ -23,15 +23,32 @@
                         confirmar_senha: ''
                     }"></dmx-value>
 
-                    <!-- Progress Bar -->
+                    <!-- Títulos dinâmicos no topo -->
+                    <div id="title-1" class="step-content mb-4">
+                        <div class="d-flex flex-column justify-content-start">
+                            <h3>Dados da Empresa</h3>
+                            <p class="text-muted">Informe os dados básicos da sua empresa</p>
+                        </div>
+                    </div>
+
+                    <div id="title-2" class="step-content mb-4" style="display: none;">
+                        <div class="d-flex flex-column justify-content-start">
+                            <h3>Endereço da Empresa</h3>
+                            <p class="text-muted">Informe o endereço completo da empresa</p>
+                        </div>
+                    </div>
+
+                    <div id="title-3" class="step-content mb-4" style="display: none;">
+                        <div class="d-flex flex-column justify-content-start">
+                            <h3>Dados de Acesso</h3>
+                            <p class="text-muted">Crie suas credenciais de acesso</p>
+                        </div>
+                    </div>
+
+                    <!-- Progress Bar abaixo dos títulos -->
                     <div class="mb-4">
                         <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-success" dmx-bind:style="'width: ' + (current_step.value / 3 * 100) + '%'" role="progressbar"></div>
-                        </div>
-                        <div class="d-flex justify-content-between mt-2 text-muted small">
-                            <span dmx-class:text-success="current_step.value >= 1">Etapa 1</span>
-                            <span dmx-class:text-success="current_step.value >= 2">Etapa 2</span>
-                            <span dmx-class:text-success="current_step.value >= 3">Etapa 3</span>
+                            <div class="progress-bar bg-dark" dmx-bind:style="'width: ' + (current_step.value / 3 * 100) + '%'" role="progressbar"></div>
                         </div>
                     </div>
 
@@ -39,11 +56,6 @@
 
                         <!-- STEP 1: Dados da Empresa -->
                         <div id="step-1" class="step-content">
-                            <div class="d-flex flex-column justify-content-start mb-4">
-                                <h3>Dados da Empresa</h3>
-                                <p class="text-muted">Informe os dados básicos da sua empresa</p>
-                            </div>
-
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group mb-3">
@@ -77,11 +89,6 @@
 
                         <!-- STEP 2: Endereço -->
                         <div id="step-2" class="step-content" style="display: none;">
-                            <div class="d-flex flex-column justify-content-start mb-4">
-                                <h3>Endereço da Empresa</h3>
-                                <p class="text-muted">Informe o endereço completo da empresa</p>
-                            </div>
-
                             <div class="form-group mb-3">
                                 <label for="endereco_completo" class="form-label">Endereço completo</label>
                                 <input type="text" class="form-control" id="endereco_completo" name="endereco_completo" dmx-bind:value="form_data.value.endereco_completo" required data-msg-required="Este é um campo obrigatório!">
@@ -145,10 +152,6 @@
 
                         <!-- STEP 3: Dados do Usuário -->
                         <div id="step-3" class="step-content" style="display: none;">
-                            <div class="d-flex flex-column justify-content-start mb-4">
-                                <h3>Dados de Acesso</h3>
-                                <p class="text-muted">Crie suas credenciais de acesso</p>
-                            </div>
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group mb-3">
@@ -192,7 +195,7 @@
                             </button>
 
                             <!-- Submit Button -->
-                            <button type="button" class="btn btn-success flex-grow-1" id="btn-submit" style="display: none;">
+                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-submit" style="display: none;">
                                 <i class="fas fa-check me-2"></i> Criar minha conta
                             </button>
                         </div>
@@ -266,8 +269,14 @@
         document.getElementById('step-2').style.display = 'none';
         document.getElementById('step-3').style.display = 'none';
 
-        // Show current step
+        // Hide all titles
+        document.getElementById('title-1').style.display = 'none';
+        document.getElementById('title-2').style.display = 'none';
+        document.getElementById('title-3').style.display = 'none';
+
+        // Show current step and title
         document.getElementById('step-' + stepNumber).style.display = 'block';
+        document.getElementById('title-' + stepNumber).style.display = 'block';
 
         // Update buttons visibility
         const btnBack = document.getElementById('btn-back');
@@ -281,15 +290,6 @@
         // Update progress bar
         const progressBar = document.querySelector('.progress-bar');
         progressBar.style.width = (stepNumber / 3 * 100) + '%';
-
-        // Update step indicators
-        document.querySelectorAll('.d-flex.justify-content-between span').forEach((span, index) => {
-            if (index < stepNumber) {
-                span.classList.add('text-success');
-            } else {
-                span.classList.remove('text-success');
-            }
-        });
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }

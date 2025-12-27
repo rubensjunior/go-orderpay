@@ -67,8 +67,8 @@ hr {
     transition: color 0.3s ease;
 }
 
-.step-indicator span.text-success {
-    color: #198754 !important;
+.step-indicator span.text-dark {
+    color: #212529 !important;
 }
 
 /* Animation for step transitions */
