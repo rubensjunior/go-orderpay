@@ -1,131 +1,200 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="criarconta" appConnect="local" components="{dmxValidator:{}}" -->
-<div class="container-fluid">
-    <div class="row">
+<div class="container-fluid vh-100">
+    <div class="row h-100">
         <div class="col-5 bg-gradient-horizontal"></div>
-        <div class="col">
+        <div class="col align-self-center">
             <div class="row align-items-center justify-content-center">
-
                 <div class="col-8">
-                    <form id="criar_conta_form">
+                    <!-- State management for multi-step form -->
+                    <dmx-value id="current_step" dmx-bind:value="1"></dmx-value>
+                    <dmx-value id="form_data" dmx-bind:value="{
+                        razao_social: '',
+                        nome_fantasia: '',
+                        cnpj: '',
+                        whatsapp: '',
+                        endereco_completo: '',
+                        cep: '',
+                        bairro: '',
+                        cidade: '',
+                        estado: '',
+                        nome_completo: '',
+                        email: '',
+                        senha: '',
+                        confirmar_senha: ''
+                    }"></dmx-value>
 
-                        <div class="d-flex flex-column justify-content-start">
-                            <h3>Endereço da empresa</h3>
-                            <p>Informe o endereço completo da empresa</p>
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" dmx-bind:style="'width: ' + (current_step.value / 3 * 100) + '%'" role="progressbar"></div>
+                        </div>
+                        <div class="d-flex justify-content-between mt-2 text-muted small">
+                            <span dmx-class:text-success="current_step.value >= 1">Etapa 1</span>
+                            <span dmx-class:text-success="current_step.value >= 2">Etapa 2</span>
+                            <span dmx-class:text-success="current_step.value >= 3">Etapa 3</span>
+                        </div>
+                    </div>
+
+                    <form id="criar_conta_form" class="needs-validation" novalidate>
+
+                        <!-- STEP 1: Dados da Empresa -->
+                        <div id="step-1" class="step-content">
+                            <div class="d-flex flex-column justify-content-start mb-4">
+                                <h3>Dados da Empresa</h3>
+                                <p class="text-muted">Informe os dados básicos da sua empresa</p>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="razao_social" class="form-label">Razão Social</label>
+                                        <input type="text" class="form-control" id="razao_social" name="razao_social" dmx-bind:value="form_data.value.razao_social" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="nome_fantasia" class="form-label">Nome Fantasia</label>
+                                        <input type="text" class="form-control" id="nome_fantasia" name="nome_fantasia" dmx-bind:value="form_data.value.nome_fantasia" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="cnpj" class="form-label">CNPJ</label>
+                                        <input type="text" class="form-control" id="cnpj" name="cnpj" dmx-bind:value="form_data.value.cnpj" placeholder="00.000.000/0000-00" maxlength="18" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="whatsapp" class="form-label">WhatsApp</label>
+                                        <input type="text" class="form-control" id="whatsapp" name="whatsapp" dmx-bind:value="form_data.value.whatsapp" placeholder="(00) 00000-0000" maxlength="15" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="razao_social" class="form-label">Razão Social</label>
-                                    <input type="text" class="form-control" id="razao_social" name="razao_social" aria-describedby="razao_social_help" required="" data-msg-required="Este é um campo obrigatório!">
-                                </div>
+                        <!-- STEP 2: Endereço -->
+                        <div id="step-2" class="step-content" style="display: none;">
+                            <div class="d-flex flex-column justify-content-start mb-4">
+                                <h3>Endereço da Empresa</h3>
+                                <p class="text-muted">Informe o endereço completo da empresa</p>
                             </div>
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="nome_fantasia" class="form-label">Nome Fantasia</label>
-                                    <input type="text" class="form-control" id="nome_fantasia" name="nome_fantasia" aria-describedby="nome_fantasia_help" required="" data-msg-required="Este é um campo obrigatório!">
+
+                            <div class="form-group mb-3">
+                                <label for="endereco_completo" class="form-label">Endereço completo</label>
+                                <input type="text" class="form-control" id="endereco_completo" name="endereco_completo" dmx-bind:value="form_data.value.endereco_completo" required data-msg-required="Este é um campo obrigatório!">
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="cep" class="form-label">CEP</label>
+                                        <input type="text" class="form-control" id="cep" name="cep" dmx-bind:value="form_data.value.cep" placeholder="00000-000" maxlength="9" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="bairro" class="form-label">Bairro</label>
+                                        <input type="text" class="form-control" id="bairro" name="bairro" dmx-bind:value="form_data.value.bairro" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="cidade" class="form-label">Cidade</label>
+                                        <input type="text" class="form-control" id="cidade" name="cidade" dmx-bind:value="form_data.value.cidade" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="estado" class="form-label">Estado</label>
+                                        <select id="estado" class="form-select" name="estado" dmx-bind:value="form_data.value.estado" required data-msg-required="Este é um campo obrigatório!">
+                                            <option value="" selected disabled>Selecione um estado</option>
+                                            <option value="AC">Acre</option>
+                                            <option value="AL">Alagoas</option>
+                                            <option value="AP">Amapá</option>
+                                            <option value="AM">Amazonas</option>
+                                            <option value="BA">Bahia</option>
+                                            <option value="CE">Ceará</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="ES">Espírito Santo</option>
+                                            <option value="GO">Goiás</option>
+                                            <option value="MA">Maranhão</option>
+                                            <option value="MT">Mato Grosso</option>
+                                            <option value="MS">Mato Grosso do Sul</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <option value="PA">Pará</option>
+                                            <option value="PB">Paraíba</option>
+                                            <option value="PR">Paraná</option>
+                                            <option value="PE">Pernambuco</option>
+                                            <option value="PI">Piauí</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="RN">Rio Grande do Norte</option>
+                                            <option value="RS">Rio Grande do Sul</option>
+                                            <option value="RO">Rondônia</option>
+                                            <option value="RR">Roraima</option>
+                                            <option value="SC">Santa Catarina</option>
+                                            <option value="SP">São Paulo</option>
+                                            <option value="SE">Sergipe</option>
+                                            <option value="TO">Tocantins</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="cnpj" class="form-label">CNPJ</label>
-                                    <input type="text" class="form-control" id="cnpj" name="cnpj" aria-describedby="cnpj_help" placeholder="00.000.000/0000-00" required="" data-msg-required="Este é um campo obrigatório!">
+                        <!-- STEP 3: Dados do Usuário -->
+                        <div id="step-3" class="step-content" style="display: none;">
+                            <div class="d-flex flex-column justify-content-start mb-4">
+                                <h3>Dados de Acesso</h3>
+                                <p class="text-muted">Crie suas credenciais de acesso</p>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="nome_completo" class="form-label">Nome completo</label>
+                                        <input type="text" class="form-control" id="nome_completo" name="nome_completo" dmx-bind:value="form_data.value.nome_completo" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="email" class="form-label">E-mail</label>
+                                        <input type="email" class="form-control" id="email" name="email" dmx-bind:value="form_data.value.email" required data-msg-required="Este é um campo obrigatório!" data-rule-email data-msg-email="Insira um e-mail válido!">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="whatsapp" class="form-label">Whatsapp</label>
-                                    <input type="text" class="form-control" id="whatsapp" name="whatsapp" aria-describedby="whatsapp_help" placeholder="(00) 00000-0000" required="" data-msg-required="Este é um campo obrigatório!">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="senha" class="form-label">Senha</label>
+                                        <input type="password" class="form-control" id="senha" name="senha" dmx-bind:value="form_data.value.senha" required data-msg-required="Este é um campo obrigatório!">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="confirmar_senha" class="form-label">Confirmar senha</label>
+                                        <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" dmx-bind:value="form_data.value.confirmar_senha" required data-msg-required="Este é um campo obrigatório!" data-rule-equalto="#senha" data-msg-equalto="As senhas precisam ser idênticas!">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-start">
-                            <h3>Dados da empresa</h3>
-                            <p>Informe os dados básicos da sua empresa</p>
                         </div>
 
-                        <div class="form-group mb-3"> <label for="endereco_completo" class="form-label">Endereço completo</label>
-                            <input type="text" class="form-control" id="endereco_completo" name="endereco_completo" aria-describedby="endereco_completo_help" required="" data-msg-required="Este é um campo obrigatório!">
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="cep" class="form-label">CEP</label>
-                                    <input type="text" class="form-control" id="cep" name="cep" aria-describedby="cep_help" placeholder="00000-000" required="" data-msg-required="Este é um campo obrigatório!">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="bairro" class="form-label">Bairro</label>
-                                    <input type="text" class="form-control" id="bairro" name="bairro" aria-describedby="bairro_help" required="" data-msg-required="Este é um campo obrigatório!">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="cidade" class="form-label">Cidade</label>
-                                    <input type="text" class="form-control" id="cidade" name="cidade" aria-describedby="cidade_help" required="" data-msg-required="Este é um campo obrigatório!">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="estado" class="form-label">Estado</label>
-                                    <select id="estado" class="form-select" name="estado" required="" data-msg-required="Este é um campo obrigatório!">
-                                        <option value="" selected disabled>Selecione um estado</option>
-                                        <option value="AC">Acre</option>
-                                        <option value="AL">Alagoas</option>
-                                        <option value="AP">Amapá</option>
-                                        <option value="AM">Amazonas</option>
-                                        <option value="BA">Bahia</option>
-                                        <option value="CE">Ceará</option>
-                                        <option value="DF">Distrito Federal</option>
-                                        <option value="ES">Espírito Santo</option>
-                                        <option value="GO">Goiás</option>
-                                        <option value="MA">Maranhão</option>
-                                        <option value="MT">Mato Grosso</option>
-                                        <option value="MS">Mato Grosso do Sul</option>
-                                        <option value="MG">Minas Gerais</option>
-                                        <option value="PA">Pará</option>
-                                        <option value="PB">Paraíba</option>
-                                        <option value="PR">Paraná</option>
-                                        <option value="PE">Pernambuco</option>
-                                        <option value="PI">Piauí</option>
-                                        <option value="RJ">Rio de Janeiro</option>
-                                        <option value="RN">Rio Grande do Norte</option>
-                                        <option value="RS">Rio Grande do Sul</option>
-                                        <option value="RO">Rondônia</option>
-                                        <option value="RR">Roraima</option>
-                                        <option value="SC">Santa Catarina</option>
-                                        <option value="SP">São Paulo</option>
-                                        <option value="SE">Sergipe</option>
-                                        <option value="TO">Tocantins</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-start">
-                            <h3>Dados do Usuário</h3>
-                            <p>Crie suas credenciais de acesso</p>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="nome_completo" class="form-label">Nome completo</label>
-                                    <input type="text" class="form-control" id="nome_completo" name="nome_completo" aria-describedby="nome_completo_help" required="" data-msg-required="Este é um campo obrigatório!">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="email" class="form-label">E-mail</label>
-                                    <input type="email" class="form-control" id="email" name="email" aria-describedby="email_help" required="" data-msg-required="Este é um campo obrigatório!" data-rule-email="" data-msg-email="Insira um e-mail válido!">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="senha" class="form-label">Senha</label>
-                                    <input type="password" class="form-control" id="senha" name="senha" aria-describedby="senha_help" required="" data-msg-required="Este é um campo obrigatório!">
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-group mb-3"> <label for="confirmar_senha" class="form-label">Confirmar senha</label>
-                                    <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" aria-describedby="confirmar_senha_help" required="" data-msg-required="Este é um campo obrigatório!" data-rule-equalto="senha" data-msg-equalto="As senhas precisam ser idênticas!">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group mb-3"> <button id="btn1" class="btn btn-dark w-100" type="submit">Criar minha conta</button>
+                        <!-- Navigation Buttons -->
+                        <div class="d-flex gap-2 mt-5" id="nav-buttons">
+                            <!-- Back Button -->
+                            <button type="button" class="btn btn-outline-secondary flex-grow-1" id="btn-back" style="display: none;">
+                                <i class="fas fa-chevron-left me-2"></i> Voltar
+                            </button>
+
+                            <!-- Next Button -->
+                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-next">
+                                Próximo <i class="fas fa-chevron-right ms-2"></i>
+                            </button>
+
+                            <!-- Submit Button -->
+                            <button type="button" class="btn btn-success flex-grow-1" id="btn-submit" style="display: none;">
+                                <i class="fas fa-check me-2"></i> Criar minha conta
+                            </button>
                         </div>
 
                     </form>
@@ -139,82 +208,201 @@
 <meta name="ac:route" content="/front/d/criar-conta">
 
 <script>
-    // Função para remover caracteres não numéricos
-function removeNonNumeric(str) {
-    return str.replace(/\D/g, '');
-}
-
-// Máscara CNPJ: 00.000.000/0000-00
-function maskCNPJ(value) {
-    const cleaned = removeNonNumeric(value);
-    const match = cleaned.match(/^(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})$/);
-    
-    if (!match) return value;
-    
-    let formatted = '';
-    if (match[1]) formatted += match[1];
-    if (match[2]) formatted += '.' + match[2];
-    if (match[3]) formatted += '.' + match[3];
-    if (match[4]) formatted += '/' + match[4];
-    if (match[5]) formatted += '-' + match[5];
-    
-    return formatted;
-}
-
-// Máscara WhatsApp: (00) 00000-0000
-function maskWhatsApp(value) {
-    const cleaned = removeNonNumeric(value);
-    const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/);
-    
-    if (!match) return value;
-    
-    let formatted = '';
-    if (match[1]) formatted += '(' + match[1];
-    if (match[2]) formatted += ') ' + match[2];
-    if (match[3]) formatted += '-' + match[3];
-    
-    return formatted;
-}
-
-// Máscara CEP: 00000-000
-function maskCEP(value) {
-    const cleaned = removeNonNumeric(value);
-    const match = cleaned.match(/^(\d{0,5})(\d{0,3})$/);
-    
-    if (!match) return value;
-    
-    let formatted = '';
-    if (match[1]) formatted += match[1];
-    if (match[2]) formatted += '-' + match[2];
-    
-    return formatted;
-}
-
-// Aplicar máscaras aos inputs
-document.addEventListener('DOMContentLoaded', function() {
-    const cnpjInput = document.getElementById('cnpj');
-    const whatsappInput = document.getElementById('whatsapp');
-    const cepInput = document.getElementById('cep');
-    
-    // CNPJ
-    if (cnpjInput) {
-        cnpjInput.addEventListener('input', function(e) {
-            this.value = maskCNPJ(this.value);
-        });
+    // Function to remove non-numeric characters
+    function removeNonNumeric(str) {
+        return str.replace(/\D/g, '');
     }
-    
-    // WhatsApp
-    if (whatsappInput) {
-        whatsappInput.addEventListener('input', function(e) {
-            this.value = maskWhatsApp(this.value);
-        });
+
+    // Mask CNPJ: 00.000.000/0000-00
+    function maskCNPJ(value) {
+        const cleaned = removeNonNumeric(value);
+        const match = cleaned.match(/^(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})$/);
+
+        if (!match) return value;
+
+        let formatted = '';
+        if (match[1]) formatted += match[1];
+        if (match[2]) formatted += '.' + match[2];
+        if (match[3]) formatted += '.' + match[3];
+        if (match[4]) formatted += '/' + match[4];
+        if (match[5]) formatted += '-' + match[5];
+
+        return formatted;
     }
-    
-    // CEP
-    if (cepInput) {
-        cepInput.addEventListener('input', function(e) {
-            this.value = maskCEP(this.value);
-        });
+
+    // Mask WhatsApp: (00) 00000-0000
+    function maskWhatsApp(value) {
+        const cleaned = removeNonNumeric(value);
+        const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/);
+
+        if (!match) return value;
+
+        let formatted = '';
+        if (match[1]) formatted += '(' + match[1];
+        if (match[2]) formatted += ') ' + match[2];
+        if (match[3]) formatted += '-' + match[3];
+
+        return formatted;
     }
-});
+
+    // Mask CEP: 00000-000
+    function maskCEP(value) {
+        const cleaned = removeNonNumeric(value);
+        const match = cleaned.match(/^(\d{0,5})(\d{0,3})$/);
+
+        if (!match) return value;
+
+        let formatted = '';
+        if (match[1]) formatted += match[1];
+        if (match[2]) formatted += '-' + match[2];
+
+        return formatted;
+    }
+
+    // Function to show/hide steps and update buttons
+    function showStep(stepNumber) {
+        // Hide all steps
+        document.getElementById('step-1').style.display = 'none';
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('step-3').style.display = 'none';
+
+        // Show current step
+        document.getElementById('step-' + stepNumber).style.display = 'block';
+
+        // Update buttons visibility
+        const btnBack = document.getElementById('btn-back');
+        const btnNext = document.getElementById('btn-next');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        btnBack.style.display = stepNumber > 1 ? 'block' : 'none';
+        btnNext.style.display = stepNumber < 3 ? 'block' : 'none';
+        btnSubmit.style.display = stepNumber === 3 ? 'block' : 'none';
+
+        // Update progress bar
+        const progressBar = document.querySelector('.progress-bar');
+        progressBar.style.width = (stepNumber / 3 * 100) + '%';
+
+        // Update step indicators
+        document.querySelectorAll('.d-flex.justify-content-between span').forEach((span, index) => {
+            if (index < stepNumber) {
+                span.classList.add('text-success');
+            } else {
+                span.classList.remove('text-success');
+            }
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function () {
+        showStep(1);
+
+        // Setup input masks
+        const cnpjInput = document.getElementById('cnpj');
+        const whatsappInput = document.getElementById('whatsapp');
+        const cepInput = document.getElementById('cep');
+
+        if (cnpjInput) {
+            cnpjInput.addEventListener('input', function (e) {
+                let value = removeNonNumeric(this.value);
+                if (value.length > 14) {
+                    value = value.substring(0, 14);
+                }
+                this.value = maskCNPJ(value);
+            });
+        }
+
+        if (whatsappInput) {
+            whatsappInput.addEventListener('input', function (e) {
+                let value = removeNonNumeric(this.value);
+                if (value.length > 11) {
+                    value = value.substring(0, 11);
+                }
+                this.value = maskWhatsApp(value);
+            });
+        }
+
+        if (cepInput) {
+            cepInput.addEventListener('input', function (e) {
+                let value = removeNonNumeric(this.value);
+                if (value.length > 8) {
+                    value = value.substring(0, 8);
+                }
+                this.value = maskCEP(value);
+            });
+        }
+
+        // Back button
+        document.getElementById('btn-back').addEventListener('click', function() {
+            const currentStep = parseInt(document.querySelector('.progress-bar').style.width) / 100 * 3;
+            const newStep = Math.max(1, Math.floor(currentStep) - 1);
+            dmx.parse('current_step.setValue(' + newStep + ')');
+            showStep(newStep);
+        });
+
+        // Next button - sem validação
+        document.getElementById('btn-next').addEventListener('click', function() {
+            const currentStep = parseInt(document.querySelector('.progress-bar').style.width) / 100 * 3;
+            const stepNum = Math.ceil(currentStep);
+            
+            const newStep = Math.min(3, stepNum + 1);
+            dmx.parse('current_step.setValue(' + newStep + ')');
+            showStep(newStep);
+        });
+
+        // Submit button
+        document.getElementById('btn-submit').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get all form inputs
+            const form = document.getElementById('criar_conta_form');
+            const inputs = form.querySelectorAll('input, select, textarea');
+            let isValid = true;
+            let firstInvalidStep = null;
+            
+            // Validate all inputs
+            inputs.forEach(input => {
+                if (!input.checkValidity()) {
+                    isValid = false;
+                    
+                    // Find which step this input belongs to
+                    if (!firstInvalidStep) {
+                        for (let i = 1; i <= 3; i++) {
+                            if (document.getElementById('step-' + i).contains(input)) {
+                                firstInvalidStep = i;
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // If there are invalid fields, add was-validated class and show the first step with errors
+            if (!isValid) {
+                form.classList.add('was-validated');
+                if (firstInvalidStep) {
+                    dmx.parse('current_step.setValue(' + firstInvalidStep + ')');
+                    showStep(firstInvalidStep);
+                }
+                return;
+            }
+            
+            // Remove was-validated class if valid
+            form.classList.remove('was-validated');
+            console.log('Formulário enviado!');
+            console.log('Form data:', dmx.parse('form_data.value'));
+            // Aqui você pode enviar os dados para o servidor
+        });
+
+        // Update form data when inputs change
+        document.getElementById('criar_conta_form').addEventListener('input', function (e) {
+            const input = e.target;
+            if (input.name) {
+                const formData = dmx.parse('form_data.value');
+                formData[input.name] = input.value;
+                dmx.parse('form_data.setValue(' + JSON.stringify(formData) + ')');
+            }
+        }, true);
+    });
 </script>
