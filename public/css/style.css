@@ -2,8 +2,8 @@
     background-color: #b5e48c;
 }
 .container-card{
-    background-color: hsla(92, 62%, 72%, 0.05);
-    border: solid 1px #b5e48c;
+    background-color: hsla(0, 0%, 0%, 0.01);
+    border: solid 1px hsla(0, 0%, 0%, 0.25);
 }
 .sub-textos{
     color: #1e3a05;
@@ -25,4 +25,20 @@ input, textarea, select, .form-control {
     justify-content: center;
     padding: 0 1rem;
     box-sizing: border-box;
+}
+
+/* Gradient horizontal */
+.bg-gradient-horizontal {
+    background: linear-gradient(to right, #F5F5F5, #D8DADE);
+}
+
+/* Gradient horizontal */
+.bg-gradient-horizontal-branco {
+    background: linear-gradient(to right, #ffffff, #E8EAEE);
+}
+
+/* Divisor com espaçamento vertical */
+hr {
+    margin-top: 2.5rem;
+    margin-bottom: 2.0rem;
 }
