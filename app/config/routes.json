@@ -5,6 +5,11 @@
       "page": "index",
       "routeType": "page",
       "layout": "main"
+    },
+    {
+      "path": "/front/d/criar-conta",
+      "page": "criar-conta",
+      "layout": "main"
     }
   ]
 }

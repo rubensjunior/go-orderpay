@@ -1,0 +1,28 @@
+.bg-primario{
+    background-color: #b5e48c;
+}
+.container-card{
+    background-color: hsla(92, 62%, 72%, 0.05);
+    border: solid 1px #b5e48c;
+}
+.sub-textos{
+    color: #1e3a05;
+}
+
+/* Default input height */
+input, textarea, select, .form-control {
+    height: 54px;
+    min-height: 54px;
+    box-sizing: border-box;
+}
+
+/* Default button height: make Bootstrap default buttons 56px high and center content */
+.btn, button, input[type="button"], input[type="submit"] {
+    height: 50px;
+    min-height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+    box-sizing: border-box;
+}
