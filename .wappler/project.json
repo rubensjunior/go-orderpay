@@ -28,7 +28,7 @@
   "targets": [
     {
       "name": "Development",
-      "remoteURL": "http://localhost:8100",
+      "remoteURL": "http://localhost:3000",
       "targetType": "wappler",
       "databaseConnectionType": "custom",
       "databaseType": "postgres",
@@ -51,7 +51,7 @@
       "db_database": "postgres",
       "ftpServer": "ftp.rubensbentes.com.br",
       "ftpUser": "master@go.orderpay.com.br",
-      "ftpPassword": "v2:361180cb3ef63562d26355d4014359eca7ad1d55525f9588"
+      "ftpPassword": "v2:96920ffb682183387ab8bbc2223990a7c3c7e09464c255a7"
     }
   ],
   "activeTarget": "Development",

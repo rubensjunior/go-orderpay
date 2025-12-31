@@ -24,21 +24,21 @@
                     }"></dmx-value>
 
                     <!-- Títulos dinâmicos no topo -->
-                    <div id="title-1" class="step-content mb-4">
+                    <div id="title-1" class="step-content mb-4" dmx-show="current_step.value === 1">
                         <div class="d-flex flex-column justify-content-start">
                             <h3>Dados da Empresa</h3>
                             <p class="text-muted">Informe os dados básicos da sua empresa</p>
                         </div>
                     </div>
 
-                    <div id="title-2" class="step-content mb-4" style="display: none;">
+                    <div id="title-2" class="step-content mb-4" dmx-show="current_step.value === 2">
                         <div class="d-flex flex-column justify-content-start">
                             <h3>Endereço da Empresa</h3>
                             <p class="text-muted">Informe o endereço completo da empresa</p>
                         </div>
                     </div>
 
-                    <div id="title-3" class="step-content mb-4" style="display: none;">
+                    <div id="title-3" class="step-content mb-4" dmx-show="current_step.value === 3">
                         <div class="d-flex flex-column justify-content-start">
                             <h3>Dados de Acesso</h3>
                             <p class="text-muted">Crie suas credenciais de acesso</p>
@@ -55,7 +55,7 @@
                     <form id="criar_conta_form" class="needs-validation" novalidate>
 
                         <!-- STEP 1: Dados da Empresa -->
-                        <div id="step-1" class="step-content">
+                        <div id="step-1" class="step-content" dmx-show="current_step.value === 1">
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group mb-3">
@@ -88,7 +88,7 @@
                         </div>
 
                         <!-- STEP 2: Endereço -->
-                        <div id="step-2" class="step-content" style="display: none;">
+                        <div id="step-2" class="step-content" dmx-show="current_step.value === 2">
                             <div class="form-group mb-3">
                                 <label for="endereco_completo" class="form-label">Endereço completo</label>
                                 <input type="text" class="form-control" id="endereco_completo" name="endereco_completo" dmx-bind:value="form_data.value.endereco_completo" required data-msg-required="Este é um campo obrigatório!">
@@ -151,7 +151,7 @@
                         </div>
 
                         <!-- STEP 3: Dados do Usuário -->
-                        <div id="step-3" class="step-content" style="display: none;">
+                        <div id="step-3" class="step-content" dmx-show="current_step.value === 3">
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group mb-3">
@@ -185,17 +185,17 @@
                         <!-- Navigation Buttons -->
                         <div class="d-flex gap-2 mt-5" id="nav-buttons">
                             <!-- Back Button -->
-                            <button type="button" class="btn btn-outline-secondary flex-grow-1" id="btn-back" style="display: none;">
+                            <button type="button" class="btn btn-outline-secondary flex-grow-1" id="btn-back" dmx-show="current_step.value > 1" dmx-on:click="current_step.setValue(current_step.value - 1); window.scrollTo({top: 0, behavior: 'smooth'});">
                                 <i class="fas fa-chevron-left me-2"></i> Voltar
                             </button>
 
                             <!-- Next Button -->
-                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-next">
+                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-next" dmx-show="current_step.value < 3" dmx-on:click="current_step.setValue(current_step.value + 1); window.scrollTo({top: 0, behavior: 'smooth'});">
                                 Próximo <i class="fas fa-chevron-right ms-2"></i>
                             </button>
 
                             <!-- Submit Button -->
-                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-submit" style="display: none;">
+                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-submit" dmx-show="current_step.value === 3" dmx-on:click="submitForm();">
                                 <i class="fas fa-check me-2"></i> Criar minha conta
                             </button>
                         </div>
@@ -262,48 +262,54 @@
         return formatted;
     }
 
-    // Function to show/hide steps and update buttons
-    function showStep(stepNumber) {
-        // Hide all steps
-        document.getElementById('step-1').style.display = 'none';
-        document.getElementById('step-2').style.display = 'none';
-        document.getElementById('step-3').style.display = 'none';
-
-        // Hide all titles
-        document.getElementById('title-1').style.display = 'none';
-        document.getElementById('title-2').style.display = 'none';
-        document.getElementById('title-3').style.display = 'none';
-
-        // Show current step and title
-        document.getElementById('step-' + stepNumber).style.display = 'block';
-        document.getElementById('title-' + stepNumber).style.display = 'block';
-
-        // Update buttons visibility
-        const btnBack = document.getElementById('btn-back');
-        const btnNext = document.getElementById('btn-next');
-        const btnSubmit = document.getElementById('btn-submit');
-
-        btnBack.style.display = stepNumber > 1 ? 'block' : 'none';
-        btnNext.style.display = stepNumber < 3 ? 'block' : 'none';
-        btnSubmit.style.display = stepNumber === 3 ? 'block' : 'none';
-
-        // Update progress bar
-        const progressBar = document.querySelector('.progress-bar');
-        progressBar.style.width = (stepNumber / 3 * 100) + '%';
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Submit form validation
+    function submitForm() {
+        const form = document.getElementById('criar_conta_form');
+        const inputs = form.querySelectorAll('input, select, textarea');
+        let isValid = true;
+        let firstInvalidStep = null;
+        
+        // Validate all inputs
+        inputs.forEach(input => {
+            if (!input.checkValidity()) {
+                isValid = false;
+                
+                // Find which step this input belongs to
+                if (!firstInvalidStep) {
+                    for (let i = 1; i <= 3; i++) {
+                        if (document.getElementById('step-' + i).contains(input)) {
+                            firstInvalidStep = i;
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        
+        // If there are invalid fields, add was-validated class and show the first step with errors
+        if (!isValid) {
+            form.classList.add('was-validated');
+            if (firstInvalidStep) {
+                dmx.parse('current_step.setValue(' + firstInvalidStep + ')');
+            }
+            return;
+        }
+        
+        // Remove was-validated class if valid
+        form.classList.remove('was-validated');
+        console.log('Formulário enviado!');
+        console.log('Form data:', dmx.parse('form_data.value'));
+        // Aqui você pode enviar os dados para o servidor
     }
 
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function () {
-        showStep(1);
-
+    // Initialize form
+    function initializeForm() {
         // Setup input masks
         const cnpjInput = document.getElementById('cnpj');
         const whatsappInput = document.getElementById('whatsapp');
         const cepInput = document.getElementById('cep');
 
-        if (cnpjInput) {
+        if (cnpjInput && !cnpjInput.hasListener) {
             cnpjInput.addEventListener('input', function (e) {
                 let value = removeNonNumeric(this.value);
                 if (value.length > 14) {
@@ -311,9 +317,10 @@
                 }
                 this.value = maskCNPJ(value);
             });
+            cnpjInput.hasListener = true;
         }
 
-        if (whatsappInput) {
+        if (whatsappInput && !whatsappInput.hasListener) {
             whatsappInput.addEventListener('input', function (e) {
                 let value = removeNonNumeric(this.value);
                 if (value.length > 11) {
@@ -321,9 +328,10 @@
                 }
                 this.value = maskWhatsApp(value);
             });
+            whatsappInput.hasListener = true;
         }
 
-        if (cepInput) {
+        if (cepInput && !cepInput.hasListener) {
             cepInput.addEventListener('input', function (e) {
                 let value = removeNonNumeric(this.value);
                 if (value.length > 8) {
@@ -331,78 +339,37 @@
                 }
                 this.value = maskCEP(value);
             });
+            cepInput.hasListener = true;
         }
 
-        // Back button
-        document.getElementById('btn-back').addEventListener('click', function() {
-            const currentStep = parseInt(document.querySelector('.progress-bar').style.width) / 100 * 3;
-            const newStep = Math.max(1, Math.floor(currentStep) - 1);
-            dmx.parse('current_step.setValue(' + newStep + ')');
-            showStep(newStep);
-        });
-
-        // Next button - sem validação
-        document.getElementById('btn-next').addEventListener('click', function() {
-            const currentStep = parseInt(document.querySelector('.progress-bar').style.width) / 100 * 3;
-            const stepNum = Math.ceil(currentStep);
-            
-            const newStep = Math.min(3, stepNum + 1);
-            dmx.parse('current_step.setValue(' + newStep + ')');
-            showStep(newStep);
-        });
-
-        // Submit button
-        document.getElementById('btn-submit').addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Get all form inputs
-            const form = document.getElementById('criar_conta_form');
-            const inputs = form.querySelectorAll('input, select, textarea');
-            let isValid = true;
-            let firstInvalidStep = null;
-            
-            // Validate all inputs
-            inputs.forEach(input => {
-                if (!input.checkValidity()) {
-                    isValid = false;
-                    
-                    // Find which step this input belongs to
-                    if (!firstInvalidStep) {
-                        for (let i = 1; i <= 3; i++) {
-                            if (document.getElementById('step-' + i).contains(input)) {
-                                firstInvalidStep = i;
-                                break;
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // If there are invalid fields, add was-validated class and show the first step with errors
-            if (!isValid) {
-                form.classList.add('was-validated');
-                if (firstInvalidStep) {
-                    dmx.parse('current_step.setValue(' + firstInvalidStep + ')');
-                    showStep(firstInvalidStep);
-                }
-                return;
-            }
-            
-            // Remove was-validated class if valid
-            form.classList.remove('was-validated');
-            console.log('Formulário enviado!');
-            console.log('Form data:', dmx.parse('form_data.value'));
-            // Aqui você pode enviar os dados para o servidor
-        });
-
         // Update form data when inputs change
-        document.getElementById('criar_conta_form').addEventListener('input', function (e) {
-            const input = e.target;
-            if (input.name) {
-                const formData = dmx.parse('form_data.value');
-                formData[input.name] = input.value;
-                dmx.parse('form_data.setValue(' + JSON.stringify(formData) + ')');
-            }
-        }, true);
+        const form = document.getElementById('criar_conta_form');
+        if (form && !form.hasDataListener) {
+            form.addEventListener('input', function (e) {
+                const input = e.target;
+                if (input.name) {
+                    const formData = dmx.parse('form_data.value');
+                    formData[input.name] = input.value;
+                    dmx.parse('form_data.setValue(' + JSON.stringify(formData) + ')');
+                }
+            }, true);
+            form.hasDataListener = true;
+        }
+    }
+
+    // Initialize on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', function () {
+        setTimeout(function() {
+            initializeForm();
+        }, 100);
     });
+
+    // Also initialize when App Connect is ready
+    if (window.dmx && window.dmx.app) {
+        window.dmx.app.on('ready', function() {
+            setTimeout(function() {
+                initializeForm();
+            }, 100);
+        });
+    }
 </script>
