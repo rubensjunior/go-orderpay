@@ -51,7 +51,7 @@
       "db_database": "postgres",
       "ftpServer": "ftp.rubensbentes.com.br",
       "ftpUser": "master@go.orderpay.com.br",
-      "ftpPassword": "v2:96920ffb682183387ab8bbc2223990a7c3c7e09464c255a7"
+      "ftpPassword": "v2:bb1d55c0eb544593cbacaed0418f4d9887669821eafc4837"
     }
   ],
   "activeTarget": "Development",
