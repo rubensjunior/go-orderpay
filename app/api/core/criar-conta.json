@@ -111,5 +111,321 @@
       }
     ]
   },
-  "exec": {}
+  "exec": {
+    "steps": [
+      {
+        "name": "validate_cnpj",
+        "module": "validator",
+        "action": "validate",
+        "options": {
+          "data": [
+            {
+              "name": "validate_1",
+              "value": "{{$_POST.cnpj}}",
+              "rules": {
+                "db:notexists": {
+                  "param": {
+                    "connection": "db",
+                    "table": "empresa",
+                    "column": "cnpj"
+                  },
+                  "message": "CNPJ já cadastrado! Entre em contato através do e-mail: suporte@orderpay.com.br."
+                }
+              },
+              "fieldName": "cnpj"
+            }
+          ]
+        }
+      },
+      {
+        "name": "validate_usuario",
+        "module": "validator",
+        "action": "validate",
+        "options": {
+          "data": [
+            {
+              "name": "validate_2",
+              "value": "{{$_POST.email}}",
+              "rules": {
+                "db:notexists": {
+                  "param": {
+                    "connection": "db",
+                    "table": "users",
+                    "column": "email"
+                  },
+                  "message": "Usuário já cadastrado. Acesse sua conta através da página de login."
+                }
+              },
+              "fieldName": "email"
+            }
+          ]
+        }
+      },
+      {
+        "name": "hash",
+        "module": "crypto",
+        "action": "passwordHash",
+        "options": {
+          "algo": "argon2id",
+          "password": "{{$_POST.senha}}"
+        },
+        "outputType": "text"
+      },
+      {
+        "name": "insert_empresa",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "empresa",
+                "column": "razao_social",
+                "type": "text",
+                "value": "{{$_POST.razao_social}}"
+              },
+              {
+                "table": "empresa",
+                "column": "nome_fantasia",
+                "type": "text",
+                "value": "{{$_POST.nome_fantasia}}"
+              },
+              {
+                "table": "empresa",
+                "column": "cnpj",
+                "type": "text",
+                "value": "{{$_POST.cnpj}}"
+              },
+              {
+                "table": "empresa",
+                "column": "whatsapp",
+                "type": "text",
+                "value": "{{$_POST.whatsapp}}"
+              },
+              {
+                "table": "empresa",
+                "column": "endereco",
+                "type": "text",
+                "value": "{{$_POST.endereco_completo}}"
+              },
+              {
+                "table": "empresa",
+                "column": "cep",
+                "type": "text",
+                "value": "{{$_POST.cep}}"
+              },
+              {
+                "table": "empresa",
+                "column": "bairro",
+                "type": "text",
+                "value": "{{$_POST.bairro}}"
+              },
+              {
+                "table": "empresa",
+                "column": "cidade",
+                "type": "text",
+                "value": "{{$_POST.cidade}}"
+              },
+              {
+                "table": "empresa",
+                "column": "estado",
+                "type": "text",
+                "value": "{{$_POST.estado}}"
+              }
+            ],
+            "table": "empresa",
+            "returning": "id_empresa",
+            "query": "insert into \"empresa\" (\"bairro\", \"cep\", \"cidade\", \"cnpj\", \"endereco\", \"estado\", \"nome_fantasia\", \"razao_social\", \"whatsapp\") values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.razao_social}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.nome_fantasia}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.cnpj}}",
+                "test": ""
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.whatsapp}}",
+                "test": ""
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.endereco_completo}}",
+                "test": ""
+              },
+              {
+                "name": ":P6",
+                "type": "expression",
+                "value": "{{$_POST.cep}}",
+                "test": ""
+              },
+              {
+                "name": ":P7",
+                "type": "expression",
+                "value": "{{$_POST.bairro}}",
+                "test": ""
+              },
+              {
+                "name": ":P8",
+                "type": "expression",
+                "value": "{{$_POST.cidade}}",
+                "test": ""
+              },
+              {
+                "name": ":P9",
+                "type": "expression",
+                "value": "{{$_POST.estado}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "insert_usuario",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "users",
+                "column": "nome_completo",
+                "type": "text",
+                "value": "{{$_POST.nome_completo}}"
+              },
+              {
+                "table": "users",
+                "column": "email",
+                "type": "text",
+                "value": "{{$_POST.email}}"
+              },
+              {
+                "table": "users",
+                "column": "password",
+                "type": "text",
+                "value": "{{hash}}"
+              }
+            ],
+            "table": "users",
+            "returning": "id_users",
+            "query": "insert into \"users\" (\"email\", \"nome_completo\", \"password\") values (?, ?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.nome_completo}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.email}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{hash}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      },
+      {
+        "name": "insert_user_empresa",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "usuario_empresa",
+                "column": "user_ref",
+                "type": "number",
+                "value": "{{insert_usuario.identity}}"
+              },
+              {
+                "table": "usuario_empresa",
+                "column": "empresa_ref",
+                "type": "number",
+                "value": "{{insert_empresa.identity}}"
+              }
+            ],
+            "table": "usuario_empresa",
+            "returning": "id_user_emp",
+            "query": "insert into \"usuario_empresa\" (\"empresa_ref\", \"user_ref\") values (?, ?)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{insert_usuario.identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{insert_empresa.identity}}",
+                "test": ""
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  },
+  "usedModules": {
+    "argon2": "^0.30.2"
+  }
 }
