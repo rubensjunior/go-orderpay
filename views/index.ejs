@@ -1,32 +1,40 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="index" appConnect="local" components="{dmxValidator:{}}" -->
-<div class="container-fluid vh-100">
-    <div class="row h-100">
-        <div class="col-5 align-self-center h-100">
-            <div class="row align-items-center justify-content-center h-100">
-                <div class="col-8">
-                    <h1 class="mb-4">Orderpay</h1>
-                    <form id="form1">
-                        <div class="form-group mb-3"> <label for="input1" class="form-label">Seu e-mail</label>
-                            <input type="email" class="form-control" id="input1" name="input1" aria-describedby="input1_help">
-                        </div>
-                        <div class="form-group mb-3"> <label for="input2" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="input2" name="input1" aria-describedby="input1_help1">
-                        </div>
-                        <div class="form-group mb-2"> <label for="input3" class="form-label">Recuperar senha? <a href="#" class="text-decoration-none fw-bold text-black">Clique aqui.</a></label>
-                        </div>
-                        <div class="form-group">
-                            <button id="btn1" class="btn w-100 btn-dark">Fazer login</button>
-                        </div>
-                        <hr>
-                        <div class="form-group"> <label for="input3" class="form-label"><a href="/front/d/criar-conta" class="text-decoration-none text-black" internal="true"><b>Clique aqui</b></a> e crie sua conta agora!</label>
-                        </div>
-                    </form>
-                </div>
+<div class="login-page">
+    <div class="login-wrapper">
+        <div class="login-form-section">
+            <div class="form-container">
+                <h1 class="login-title">Orderpay</h1>
+                <form id="login_form" class="needs-validation">
+                    <div class="form-group mb-3">
+                        <label for="email" class="form-label">Seu e-mail</label>
+                        <input type="email" class="form-control" id="email" name="email" required data-msg-required="Por favor, insira seu e-mail" data-rule-email="true" data-msg-email="Por favor, insira um e-mail válido">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="password" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="password" name="password" required data-msg-required="Por favor, insira sua senha" minlength="6" data-msg-minlength="A senha deve ter no mínimo 6 caracteres">
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">
+                            Recuperar senha? <a href="#" class="text-black fw-bold text-decoration-none">Clique aqui.</a>
+                        </label>
+                    </div>
+
+                    <button id="login_button" type="submit" class="btn btn-dark w-100 mb-3">Fazer login</button>
+
+                    <hr class="my-3">
+
+                    <p class="text-center mb-0">
+                        <a href="/front/d/criar-conta" class="text-black text-decoration-none" internal="true">
+                            <strong>Clique aqui</strong>
+                        </a> e crie sua conta agora!
+                    </p>
+                </form>
             </div>
         </div>
-        <div class="col bg-gradient-horizontal h-100">
 
-        </div>
+        <div class="login-image-section"></div>
     </div>
 </div>
 
