@@ -1,209 +1,213 @@
 <!-- Wappler include head-page="layouts/main" fontawesome_5="cdn" bootstrap5="local" is="dmx-app" id="criarconta" appConnect="local" components="{dmxValidator:{}}" -->
-<div class="container-fluid vh-100">
-    <div class="row h-100">
-        <div class="col-5 bg-gradient-horizontal"></div>
-        <div class="col align-self-center">
-            <div class="row align-items-center justify-content-center">
-                <div class="col-8">
-                    <!-- State management for multi-step form -->
-                    <dmx-value id="current_step" dmx-bind:value="1"></dmx-value>
-                    <dmx-value id="form_data" dmx-bind:value="{
-                        razao_social: '',
-                        nome_fantasia: '',
-                        cnpj: '',
-                        whatsapp: '',
-                        endereco_completo: '',
-                        cep: '',
-                        bairro: '',
-                        cidade: '',
-                        estado: '',
-                        nome_completo: '',
-                        email: '',
-                        senha: '',
-                        confirmar_senha: ''
-                    }"></dmx-value>
+<div class="container-fluid min-vh-100 py-3 py-md-5">
+    <div class="row h-auto">
+        <!-- Gradient sidebar - hidden on mobile, visible on md and up -->
+        <div class="col-12 col-md-5 d-none d-md-block bg-gradient-horizontal" style="min-height: 100vh;"></div>
 
-                    <!-- Títulos dinâmicos no topo -->
-                    <div id="title-1" class="step-content mb-4" dmx-show="current_step.value === 1">
-                        <div class="d-flex flex-column justify-content-start">
-                            <h3>Dados da Empresa</h3>
-                            <p class="text-muted">Informe os dados básicos da sua empresa</p>
+        <div class="col-12 col-md-7 d-flex align-items-center justify-content-center">
+            <div class="w-100 px-3 px-md-4">
+                <div class="row align-items-center justify-content-center">
+                    <div class="col-12 col-sm-10 col-md-9 col-lg-8">
+                        <!-- State management for multi-step form -->
+                        <dmx-value id="current_step" dmx-bind:value="1"></dmx-value>
+                        <dmx-value id="form_data" dmx-bind:value="{
+                            razao_social: '',
+                            nome_fantasia: '',
+                            cnpj: '',
+                            whatsapp: '',
+                            endereco_completo: '',
+                            cep: '',
+                            bairro: '',
+                            cidade: '',
+                            estado: '',
+                            nome_completo: '',
+                            email: '',
+                            senha: '',
+                            confirmar_senha: ''
+                        }"></dmx-value>
+
+                        <!-- Títulos dinâmicos no topo -->
+                        <div id="title-1" class="step-content mb-4" dmx-show="current_step.value === 1">
+                            <div class="d-flex flex-column justify-content-start">
+                                <h2 class="h3 h2-md fw-bold">Dados da Empresa</h2>
+                                <p class="text-muted fs-6">Informe os dados básicos da sua empresa</p>
+                            </div>
                         </div>
+
+                        <div id="title-2" class="step-content mb-4" dmx-show="current_step.value === 2">
+                            <div class="d-flex flex-column justify-content-start">
+                                <h2 class="h3 h2-md fw-bold">Endereço da Empresa</h2>
+                                <p class="text-muted fs-6">Informe o endereço completo da empresa</p>
+                            </div>
+                        </div>
+
+                        <div id="title-3" class="step-content mb-4" dmx-show="current_step.value === 3">
+                            <div class="d-flex flex-column justify-content-start">
+                                <h2 class="h3 h2-md fw-bold">Dados de Acesso</h2>
+                                <p class="text-muted fs-6">Crie suas credenciais de acesso</p>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar abaixo dos títulos -->
+                        <div class="mb-4">
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-dark" dmx-bind:style="'width: ' + (current_step.value / 3 * 100) + '%'" role="progressbar"></div>
+                            </div>
+                        </div>
+
+                        <form id="criar_conta_form" class="needs-validation" is="dmx-serverconnect-form" method="post" action="/api/core/criar-conta" dmx-on:success="notificacoes.success('Cadastro realizado com sucesso!')" dmx-on:error="notificacoes.danger('Ocorreu um erro: '+lastError.status+lastError.message+lastError.response+'. Relate o problema através do e-mail suporte@orderpay.com.br.')">
+
+                            <!-- STEP 1: Dados da Empresa -->
+                            <div id="step-1" class="step-content" dmx-show="current_step.value === 1">
+                                <div class="row g-2 g-md-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="razao_social" class="form-label">Razão Social</label>
+                                            <input type="text" class="form-control" id="razao_social" name="razao_social" dmx-bind:value="form_data.value.razao_social" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="nome_fantasia" class="form-label">Nome Fantasia</label>
+                                            <input type="text" class="form-control" id="nome_fantasia" name="nome_fantasia" dmx-bind:value="form_data.value.nome_fantasia" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 g-md-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="cnpj" class="form-label">CNPJ</label>
+                                            <input type="text" class="form-control" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="whatsapp" class="form-label">WhatsApp</label>
+                                            <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STEP 2: Endereço -->
+                            <div id="step-2" class="step-content" dmx-show="current_step.value === 2">
+                                <div class="form-group mb-3">
+                                    <label for="endereco_completo" class="form-label">Endereço completo</label>
+                                    <input type="text" class="form-control" id="endereco_completo" name="endereco_completo" dmx-bind:value="form_data.value.endereco_completo" required data-msg-required="Este é um campo obrigatório!">
+                                </div>
+                                <div class="row g-2 g-md-3">
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label for="cep" class="form-label">CEP</label>
+                                            <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label for="bairro" class="form-label">Bairro</label>
+                                            <input type="text" class="form-control" id="bairro" name="bairro" dmx-bind:value="form_data.value.bairro" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label for="cidade" class="form-label">Cidade</label>
+                                            <input type="text" class="form-control" id="cidade" name="cidade" dmx-bind:value="form_data.value.cidade" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <div class="form-group mb-3">
+                                            <label for="estado" class="form-label">Estado</label>
+                                            <select id="estado" class="form-select" name="estado" dmx-bind:value="form_data.value.estado" required data-msg-required="Este é um campo obrigatório!">
+                                                <option value="" selected disabled>Selecione</option>
+                                                <option value="AC">Acre</option>
+                                                <option value="AL">Alagoas</option>
+                                                <option value="AP">Amapá</option>
+                                                <option value="AM">Amazonas</option>
+                                                <option value="BA">Bahia</option>
+                                                <option value="CE">Ceará</option>
+                                                <option value="DF">Distrito Federal</option>
+                                                <option value="ES">Espírito Santo</option>
+                                                <option value="GO">Goiás</option>
+                                                <option value="MA">Maranhão</option>
+                                                <option value="MT">Mato Grosso</option>
+                                                <option value="MS">Mato Grosso do Sul</option>
+                                                <option value="MG">Minas Gerais</option>
+                                                <option value="PA">Pará</option>
+                                                <option value="PB">Paraíba</option>
+                                                <option value="PR">Paraná</option>
+                                                <option value="PE">Pernambuco</option>
+                                                <option value="PI">Piauí</option>
+                                                <option value="RJ">Rio de Janeiro</option>
+                                                <option value="RN">Rio Grande do Norte</option>
+                                                <option value="RS">Rio Grande do Sul</option>
+                                                <option value="RO">Rondônia</option>
+                                                <option value="RR">Roraima</option>
+                                                <option value="SC">Santa Catarina</option>
+                                                <option value="SP">São Paulo</option>
+                                                <option value="SE">Sergipe</option>
+                                                <option value="TO">Tocantins</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- STEP 3: Dados do Usuário -->
+                            <div id="step-3" class="step-content" dmx-show="current_step.value === 3">
+                                <div class="row g-2 g-md-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="nome_completo" class="form-label">Nome completo</label>
+                                            <input type="text" class="form-control" id="nome_completo" name="nome_completo" dmx-bind:value="form_data.value.nome_completo" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="email" class="form-label">E-mail</label>
+                                            <input type="email" class="form-control" id="email" name="email" dmx-bind:value="form_data.value.email" required data-msg-required="Este é um campo obrigatório!" data-rule-email data-msg-email="Insira um e-mail válido!">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-2 g-md-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="senha" class="form-label">Senha</label>
+                                            <input type="password" class="form-control" id="senha" name="senha" dmx-bind:value="form_data.value.senha" required data-msg-required="Este é um campo obrigatório!">
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group mb-3">
+                                            <label for="confirmar_senha" class="form-label">Confirmar senha</label>
+                                            <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" dmx-bind:value="form_data.value.confirmar_senha" required data-msg-required="Este é um campo obrigatório!" data-rule-equalto="#senha" data-msg-equalto="As senhas precisam ser idênticas!">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Navigation Buttons -->
+                            <div class="d-flex flex-column flex-sm-row gap-2 mt-5" id="nav-buttons">
+                                <!-- Back Button -->
+                                <button type="button" class="btn btn-outline-secondary flex-sm-grow-1 order-2 order-sm-1" id="btn-back" dmx-show="current_step.value > 1" dmx-on:click="current_step.setValue(current_step.value - 1); window.scrollTo({top: 0, behavior: 'smooth'});">
+                                    <i class="fas fa-chevron-left me-2"></i> <span class="d-none d-sm-inline">Voltar</span>
+                                </button>
+
+                                <!-- Next Button -->
+                                <button type="button" class="btn btn-dark flex-sm-grow-1 order-1 order-sm-2" id="btn-next" dmx-show="current_step.value < 3" onclick="validateAndNext();">
+                                    Próximo <i class="fas fa-chevron-right ms-2"></i>
+                                </button>
+
+                                <!-- Submit Button -->
+                                <button type="submit" class="btn btn-dark flex-sm-grow-1 order-1 order-sm-2" id="btn-submit" dmx-show="current_step.value === 3">
+                                    <i class="fas fa-check me-2"></i> Criar minha conta
+                                </button>
+                            </div>
+
+                        </form>
                     </div>
-
-                    <div id="title-2" class="step-content mb-4" dmx-show="current_step.value === 2">
-                        <div class="d-flex flex-column justify-content-start">
-                            <h3>Endereço da Empresa</h3>
-                            <p class="text-muted">Informe o endereço completo da empresa</p>
-                        </div>
-                    </div>
-
-                    <div id="title-3" class="step-content mb-4" dmx-show="current_step.value === 3">
-                        <div class="d-flex flex-column justify-content-start">
-                            <h3>Dados de Acesso</h3>
-                            <p class="text-muted">Crie suas credenciais de acesso</p>
-                        </div>
-                    </div>
-
-                    <!-- Progress Bar abaixo dos títulos -->
-                    <div class="mb-4">
-                        <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-dark" dmx-bind:style="'width: ' + (current_step.value / 3 * 100) + '%'" role="progressbar"></div>
-                        </div>
-                    </div>
-
-                    <form id="criar_conta_form" class="needs-validation" is="dmx-serverconnect-form" method="post" action="/api/core/criar-conta" dmx-on:success="notificacoes.success('Cadastro realizado com sucesso!')" dmx-on:error="notificacoes.danger('Ocorreu um erro: '+lastError.status+lastError.message+lastError.response+'. Relate o problema através do e-mail suporte@orderpay.com.br.')">
-
-                        <!-- STEP 1: Dados da Empresa -->
-                        <div id="step-1" class="step-content" dmx-show="current_step.value === 1">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="razao_social" class="form-label">Razão Social</label>
-                                        <input type="text" class="form-control" id="razao_social" name="razao_social" dmx-bind:value="form_data.value.razao_social" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="nome_fantasia" class="form-label">Nome Fantasia</label>
-                                        <input type="text" class="form-control" id="nome_fantasia" name="nome_fantasia" dmx-bind:value="form_data.value.nome_fantasia" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="cnpj" class="form-label">CNPJ</label>
-                                        <input type="text" class="form-control" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="whatsapp" class="form-label">WhatsApp</label>
-                                        <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- STEP 2: Endereço -->
-                        <div id="step-2" class="step-content" dmx-show="current_step.value === 2">
-                            <div class="form-group mb-3">
-                                <label for="endereco_completo" class="form-label">Endereço completo</label>
-                                <input type="text" class="form-control" id="endereco_completo" name="endereco_completo" dmx-bind:value="form_data.value.endereco_completo" required data-msg-required="Este é um campo obrigatório!">
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="cep" class="form-label">CEP</label>
-                                        <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="bairro" class="form-label">Bairro</label>
-                                        <input type="text" class="form-control" id="bairro" name="bairro" dmx-bind:value="form_data.value.bairro" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="cidade" class="form-label">Cidade</label>
-                                        <input type="text" class="form-control" id="cidade" name="cidade" dmx-bind:value="form_data.value.cidade" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="estado" class="form-label">Estado</label>
-                                        <select id="estado" class="form-select" name="estado" dmx-bind:value="form_data.value.estado" required data-msg-required="Este é um campo obrigatório!">
-                                            <option value="" selected disabled>Selecione um estado</option>
-                                            <option value="AC">Acre</option>
-                                            <option value="AL">Alagoas</option>
-                                            <option value="AP">Amapá</option>
-                                            <option value="AM">Amazonas</option>
-                                            <option value="BA">Bahia</option>
-                                            <option value="CE">Ceará</option>
-                                            <option value="DF">Distrito Federal</option>
-                                            <option value="ES">Espírito Santo</option>
-                                            <option value="GO">Goiás</option>
-                                            <option value="MA">Maranhão</option>
-                                            <option value="MT">Mato Grosso</option>
-                                            <option value="MS">Mato Grosso do Sul</option>
-                                            <option value="MG">Minas Gerais</option>
-                                            <option value="PA">Pará</option>
-                                            <option value="PB">Paraíba</option>
-                                            <option value="PR">Paraná</option>
-                                            <option value="PE">Pernambuco</option>
-                                            <option value="PI">Piauí</option>
-                                            <option value="RJ">Rio de Janeiro</option>
-                                            <option value="RN">Rio Grande do Norte</option>
-                                            <option value="RS">Rio Grande do Sul</option>
-                                            <option value="RO">Rondônia</option>
-                                            <option value="RR">Roraima</option>
-                                            <option value="SC">Santa Catarina</option>
-                                            <option value="SP">São Paulo</option>
-                                            <option value="SE">Sergipe</option>
-                                            <option value="TO">Tocantins</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- STEP 3: Dados do Usuário -->
-                        <div id="step-3" class="step-content" dmx-show="current_step.value === 3">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="nome_completo" class="form-label">Nome completo</label>
-                                        <input type="text" class="form-control" id="nome_completo" name="nome_completo" dmx-bind:value="form_data.value.nome_completo" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="email" class="form-label">E-mail</label>
-                                        <input type="email" class="form-control" id="email" name="email" dmx-bind:value="form_data.value.email" required data-msg-required="Este é um campo obrigatório!" data-rule-email data-msg-email="Insira um e-mail válido!">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="senha" class="form-label">Senha</label>
-                                        <input type="password" class="form-control" id="senha" name="senha" dmx-bind:value="form_data.value.senha" required data-msg-required="Este é um campo obrigatório!">
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <div class="form-group mb-3">
-                                        <label for="confirmar_senha" class="form-label">Confirmar senha</label>
-                                        <input type="password" class="form-control" id="confirmar_senha" name="confirmar_senha" dmx-bind:value="form_data.value.confirmar_senha" required data-msg-required="Este é um campo obrigatório!" data-rule-equalto="#senha" data-msg-equalto="As senhas precisam ser idênticas!">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Navigation Buttons -->
-                        <div class="d-flex gap-2 mt-5" id="nav-buttons">
-                            <!-- Back Button -->
-                            <button type="button" class="btn btn-outline-secondary flex-grow-1" id="btn-back" dmx-show="current_step.value > 1" dmx-on:click="current_step.setValue(current_step.value - 1); window.scrollTo({top: 0, behavior: 'smooth'});">
-                                <i class="fas fa-chevron-left me-2"></i> Voltar
-                            </button>
-
-                            <!-- Next Button -->
-                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-next" dmx-show="current_step.value < 3" onclick="validateAndNext();">
-                                Próximo <i class="fas fa-chevron-right ms-2"></i>
-                            </button>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn btn-dark flex-grow-1" id="btn-submit" dmx-show="current_step.value === 3">
-                                <i class="fas fa-check me-2"></i> Criar minha conta
-                            </button>
-                        </div>
-
-                    </form>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 </div>
