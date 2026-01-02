@@ -233,11 +233,17 @@
                 "column": "estado",
                 "type": "text",
                 "value": "{{$_POST.estado}}"
+              },
+              {
+                "table": "empresa",
+                "column": "status",
+                "type": "text",
+                "value": "{{'Ativo'}}"
               }
             ],
             "table": "empresa",
             "returning": "id_empresa",
-            "query": "insert into \"empresa\" (\"bairro\", \"cep\", \"cidade\", \"cnpj\", \"endereco\", \"estado\", \"nome_fantasia\", \"razao_social\", \"whatsapp\") values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "query": "insert into \"empresa\" (\"bairro\", \"cep\", \"cidade\", \"cnpj\", \"endereco\", \"estado\", \"nome_fantasia\", \"razao_social\", \"status\", \"whatsapp\") values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning \"id_empresa\"",
             "params": [
               {
                 "name": ":P1",
@@ -291,6 +297,12 @@
                 "name": ":P9",
                 "type": "expression",
                 "value": "{{$_POST.estado}}",
+                "test": ""
+              },
+              {
+                "name": ":P10",
+                "type": "expression",
+                "value": "{{'Ativo'}}",
                 "test": ""
               }
             ]
@@ -391,11 +403,17 @@
                 "column": "empresa_ref",
                 "type": "number",
                 "value": "{{insert_empresa.identity}}"
+              },
+              {
+                "table": "usuario_empresa",
+                "column": "user_empr_status",
+                "type": "text",
+                "value": "{{'Ativo'}}"
               }
             ],
             "table": "usuario_empresa",
             "returning": "id_user_emp",
-            "query": "insert into \"usuario_empresa\" (\"empresa_ref\", \"user_ref\") values (?, ?)",
+            "query": "insert into \"usuario_empresa\" (\"empresa_ref\", \"user_empr_status\", \"user_ref\") values (?, ?, ?) returning \"id_user_emp\"",
             "params": [
               {
                 "name": ":P1",
@@ -407,6 +425,12 @@
                 "name": ":P2",
                 "type": "expression",
                 "value": "{{insert_empresa.identity}}",
+                "test": ""
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{'Ativo'}}",
                 "test": ""
               }
             ]

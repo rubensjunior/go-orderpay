@@ -52,7 +52,7 @@
                         </div>
                     </div>
 
-                    <form id="criar_conta_form" class="needs-validation">
+                    <form id="criar_conta_form" class="needs-validation" is="dmx-serverconnect-form" method="post" action="/api/core/criar-conta" dmx-on:success="notificacoes.success('Cadastro realizado com sucesso!')" dmx-on:error="notificacoes.danger('Ocorreu um erro: '+lastError.status+lastError.message+lastError.response+'. Relate o problema através do e-mail suporte@orderpay.com.br.')">
 
                         <!-- STEP 1: Dados da Empresa -->
                         <div id="step-1" class="step-content" dmx-show="current_step.value === 1">

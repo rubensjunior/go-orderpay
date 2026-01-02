@@ -326,6 +326,19 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "emp_selecionada": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id_empresa",
+              "inTable": "empresa",
+              "referenceType": "bigInteger",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
           }
         },
         "refs": {
@@ -435,6 +448,15 @@
               "unique": false,
               "nullable": true
             }
+          },
+          "status": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         },
         "refs": {
@@ -490,11 +512,25 @@
               "onUpdate": "NO ACTION",
               "onDelete": "NO ACTION"
             }
+          },
+          "user_empr_status": {
+            "db": {
+              "type": "string",
+              "maxLength": -5,
+              "primary": false,
+              "unique": false,
+              "nullable": true
+            }
           }
         }
       }
     },
     "views": {
+      "vault.decrypted_secrets": {
+        "db": {
+          "schema": "vault"
+        }
+      },
       "extensions.pg_stat_statements_info": {
         "db": {
           "schema": "extensions"
@@ -503,11 +539,6 @@
       "extensions.pg_stat_statements": {
         "db": {
           "schema": "extensions"
-        }
-      },
-      "vault.decrypted_secrets": {
-        "db": {
-          "schema": "vault"
         }
       }
     },
