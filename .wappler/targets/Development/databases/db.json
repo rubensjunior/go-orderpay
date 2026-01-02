@@ -282,6 +282,9 @@
               "nullable": true
             }
           }
+        },
+        "refs": {
+          "usuario_empresa": "user_ref"
         }
       },
       "empresa": {
@@ -386,6 +389,61 @@
               "primary": false,
               "unique": false,
               "nullable": true
+            }
+          }
+        },
+        "refs": {
+          "users": "emp_selecionada",
+          "usuario_empresa": "empresa_ref"
+        }
+      },
+      "usuario_empresa": {
+        "db": {
+          "schema": "public"
+        },
+        "columns": {
+          "id_user_emp": {
+            "db": {
+              "type": "bigIncrements",
+              "primary": true,
+              "unique": true,
+              "nullable": false
+            }
+          },
+          "created_at": {
+            "db": {
+              "type": "timestamp",
+              "default": "now()",
+              "useTz": true,
+              "primary": false,
+              "unique": false,
+              "nullable": false
+            }
+          },
+          "user_ref": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id_users",
+              "inTable": "users",
+              "referenceType": "bigInteger",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
+            }
+          },
+          "empresa_ref": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "unique": false,
+              "nullable": true,
+              "references": "id_empresa",
+              "inTable": "empresa",
+              "referenceType": "bigInteger",
+              "onUpdate": "NO ACTION",
+              "onDelete": "NO ACTION"
             }
           }
         }

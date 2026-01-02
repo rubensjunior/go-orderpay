@@ -1,3 +1,115 @@
 {
+  "meta": {
+    "options": {
+      "linkedFile": "/views/criar-conta.ejs",
+      "linkedForm": "criar_conta_form"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "razao_social",
+        "options": {
+          "rules": {}
+        },
+        "name": "razao_social"
+      },
+      {
+        "type": "text",
+        "fieldName": "nome_fantasia",
+        "options": {
+          "rules": {}
+        },
+        "name": "nome_fantasia"
+      },
+      {
+        "type": "text",
+        "fieldName": "cnpj",
+        "options": {
+          "rules": {}
+        },
+        "name": "cnpj"
+      },
+      {
+        "type": "text",
+        "fieldName": "whatsapp",
+        "options": {
+          "rules": {}
+        },
+        "name": "whatsapp"
+      },
+      {
+        "type": "text",
+        "fieldName": "endereco_completo",
+        "options": {
+          "rules": {}
+        },
+        "name": "endereco_completo"
+      },
+      {
+        "type": "text",
+        "fieldName": "cep",
+        "options": {
+          "rules": {}
+        },
+        "name": "cep"
+      },
+      {
+        "type": "text",
+        "fieldName": "bairro",
+        "options": {
+          "rules": {}
+        },
+        "name": "bairro"
+      },
+      {
+        "type": "text",
+        "fieldName": "cidade",
+        "options": {
+          "rules": {}
+        },
+        "name": "cidade"
+      },
+      {
+        "type": "text",
+        "fieldName": "nome_completo",
+        "options": {
+          "rules": {}
+        },
+        "name": "nome_completo"
+      },
+      {
+        "type": "text",
+        "fieldName": "email",
+        "options": {
+          "rules": {}
+        },
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "fieldName": "senha",
+        "options": {
+          "rules": {}
+        },
+        "name": "senha"
+      },
+      {
+        "type": "text",
+        "fieldName": "confirmar_senha",
+        "options": {
+          "rules": {}
+        },
+        "name": "confirmar_senha"
+      },
+      {
+        "type": "text",
+        "fieldName": "estado",
+        "options": {
+          "rules": {}
+        },
+        "name": "estado"
+      }
+    ]
+  },
   "exec": {}
 }
