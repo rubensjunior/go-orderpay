@@ -52,7 +52,7 @@
                         </div>
                     </div>
 
-                    <form id="criar_conta_form" class="needs-validation" novalidate>
+                    <form id="criar_conta_form" class="needs-validation">
 
                         <!-- STEP 1: Dados da Empresa -->
                         <div id="step-1" class="step-content" dmx-show="current_step.value === 1">
@@ -75,13 +75,13 @@
                                 <div class="col">
                                     <div class="form-group mb-3">
                                         <label for="cnpj" class="form-label">CNPJ</label>
-                                        <input type="text" class="form-control" id="cnpj" name="cnpj" dmx-bind:value="form_data.value.cnpj" placeholder="00.000.000/0000-00" maxlength="18" required data-msg-required="Este é um campo obrigatório!">
+                                        <input type="text" class="form-control" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" required data-msg-required="Este é um campo obrigatório!">
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group mb-3">
                                         <label for="whatsapp" class="form-label">WhatsApp</label>
-                                        <input type="text" class="form-control" id="whatsapp" name="whatsapp" dmx-bind:value="form_data.value.whatsapp" placeholder="(00) 00000-0000" maxlength="15" required data-msg-required="Este é um campo obrigatório!">
+                                        <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required data-msg-required="Este é um campo obrigatório!">
                                     </div>
                                 </div>
                             </div>
@@ -97,7 +97,7 @@
                                 <div class="col">
                                     <div class="form-group mb-3">
                                         <label for="cep" class="form-label">CEP</label>
-                                        <input type="text" class="form-control" id="cep" name="cep" dmx-bind:value="form_data.value.cep" placeholder="00000-000" maxlength="9" required data-msg-required="Este é um campo obrigatório!">
+                                        <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000" required data-msg-required="Este é um campo obrigatório!">
                                     </div>
                                 </div>
                                 <div class="col">
@@ -190,12 +190,12 @@
                             </button>
 
                             <!-- Next Button -->
-                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-next" dmx-show="current_step.value < 3" dmx-on:click="current_step.setValue(current_step.value + 1); window.scrollTo({top: 0, behavior: 'smooth'});">
+                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-next" dmx-show="current_step.value < 3" onclick="validateAndNext();">
                                 Próximo <i class="fas fa-chevron-right ms-2"></i>
                             </button>
 
                             <!-- Submit Button -->
-                            <button type="button" class="btn btn-dark flex-grow-1" id="btn-submit" dmx-show="current_step.value === 3" dmx-on:click="submitForm();">
+                            <button type="submit" class="btn btn-dark flex-grow-1" id="btn-submit" dmx-show="current_step.value === 3">
                                 <i class="fas fa-check me-2"></i> Criar minha conta
                             </button>
                         </div>
@@ -211,149 +211,225 @@
 <meta name="ac:route" content="/front/d/criar-conta">
 
 <script>
-    // Function to remove non-numeric characters
-    function removeNonNumeric(str) {
-        return str.replace(/\D/g, '');
-    }
-
-    // Mask CNPJ: 00.000.000/0000-00
+    // Mask CNPJ: 00.000.000/0000-00 (14 digits)
     function maskCNPJ(value) {
-        const cleaned = removeNonNumeric(value);
-        const match = cleaned.match(/^(\d{0,2})(\d{0,3})(\d{0,3})(\d{0,4})(\d{0,2})$/);
-
-        if (!match) return value;
-
-        let formatted = '';
-        if (match[1]) formatted += match[1];
-        if (match[2]) formatted += '.' + match[2];
-        if (match[3]) formatted += '.' + match[3];
-        if (match[4]) formatted += '/' + match[4];
-        if (match[5]) formatted += '-' + match[5];
-
-        return formatted;
-    }
-
-    // Mask WhatsApp: (00) 00000-0000
-    function maskWhatsApp(value) {
-        const cleaned = removeNonNumeric(value);
-        const match = cleaned.match(/^(\d{0,2})(\d{0,5})(\d{0,4})$/);
-
-        if (!match) return value;
-
-        let formatted = '';
-        if (match[1]) formatted += '(' + match[1];
-        if (match[2]) formatted += ') ' + match[2];
-        if (match[3]) formatted += '-' + match[3];
-
-        return formatted;
-    }
-
-    // Mask CEP: 00000-000
-    function maskCEP(value) {
-        const cleaned = removeNonNumeric(value);
-        const match = cleaned.match(/^(\d{0,5})(\d{0,3})$/);
-
-        if (!match) return value;
-
-        let formatted = '';
-        if (match[1]) formatted += match[1];
-        if (match[2]) formatted += '-' + match[2];
-
-        return formatted;
-    }
-
-    // Submit form validation
-    function submitForm() {
-        const form = document.getElementById('criar_conta_form');
-        const inputs = form.querySelectorAll('input, select, textarea');
-        let isValid = true;
-        let firstInvalidStep = null;
+        // Remove tudo que não for número
+        let digits = value.replace(/\D/g, '');
         
-        // Validate all inputs
+        // Limita a 14 dígitos
+        digits = digits.slice(0, 14);
+        
+        // Aplica máscara
+        if (digits.length === 0) return '';
+        if (digits.length <= 2) return digits;
+        if (digits.length <= 5) return digits.slice(0, 2) + '.' + digits.slice(2);
+        if (digits.length <= 8) return digits.slice(0, 2) + '.' + digits.slice(2, 5) + '.' + digits.slice(5);
+        if (digits.length <= 12) return digits.slice(0, 2) + '.' + digits.slice(2, 5) + '.' + digits.slice(5, 8) + '/' + digits.slice(8);
+        return digits.slice(0, 2) + '.' + digits.slice(2, 5) + '.' + digits.slice(5, 8) + '/' + digits.slice(8, 12) + '-' + digits.slice(12, 14);
+    }
+
+    // Mask WhatsApp: (00) 00000-0000 (11 digits)
+    function maskWhatsApp(value) {
+        // Remove tudo que não for número
+        let digits = value.replace(/\D/g, '');
+        
+        // Limita a 11 dígitos
+        digits = digits.slice(0, 11);
+        
+        // Aplica máscara
+        if (digits.length === 0) return '';
+        if (digits.length <= 2) return '(' + digits;
+        if (digits.length <= 7) return '(' + digits.slice(0, 2) + ') ' + digits.slice(2);
+        return '(' + digits.slice(0, 2) + ') ' + digits.slice(2, 7) + '-' + digits.slice(7, 11);
+    }
+
+    // Mask CEP: 00000-000 (8 digits)
+    function maskCEP(value) {
+        // Remove tudo que não for número
+        let digits = value.replace(/\D/g, '');
+        
+        // Limita a 8 dígitos
+        digits = digits.slice(0, 8);
+        
+        // Aplica máscara
+        if (digits.length === 0) return '';
+        if (digits.length <= 5) return digits;
+        return digits.slice(0, 5) + '-' + digits.slice(5, 8);
+    }
+
+    // Validate current step and move to next
+    function validateAndNext() {
+        const form = document.getElementById('criar_conta_form');
+        const currentStepComponent = dmx.app.find('current_step');
+        const currentStep = currentStepComponent.data.value;
+        const stepDiv = document.getElementById('step-' + currentStep);
+        
+        if (!stepDiv) return false;
+
+        const inputs = stepDiv.querySelectorAll('input, select, textarea');
+        let isValid = true;
+
         inputs.forEach(input => {
+            input.classList.remove('is-invalid', 'is-valid');
+            
             if (!input.checkValidity()) {
                 isValid = false;
+                input.classList.add('is-invalid');
+            } else {
+                input.classList.add('is-valid');
+            }
+        });
+
+        if (!isValid) {
+            form.classList.add('was-validated');
+            return false;
+        }
+
+        form.classList.remove('was-validated');
+        
+        // Move to next step using App Connect component
+        currentStepComponent.set('value', currentStep + 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        return true;
+    }
+
+    // Validate all fields for form submission
+    function validateAllFields() {
+        const form = document.getElementById('criar_conta_form');
+        const allInputs = form.querySelectorAll('input, select, textarea');
+        let isValid = true;
+        let firstInvalidStep = null;
+
+        allInputs.forEach(input => {
+            input.classList.remove('is-invalid', 'is-valid');
+            
+            if (!input.checkValidity()) {
+                isValid = false;
+                input.classList.add('is-invalid');
                 
                 // Find which step this input belongs to
                 if (!firstInvalidStep) {
                     for (let i = 1; i <= 3; i++) {
-                        if (document.getElementById('step-' + i).contains(input)) {
+                        const stepDiv = document.getElementById('step-' + i);
+                        if (stepDiv && stepDiv.contains(input)) {
                             firstInvalidStep = i;
                             break;
                         }
                     }
                 }
+            } else {
+                input.classList.add('is-valid');
             }
         });
-        
-        // If there are invalid fields, add was-validated class and show the first step with errors
+
         if (!isValid) {
             form.classList.add('was-validated');
+            // Navigate to step with first error
             if (firstInvalidStep) {
-                dmx.parse('current_step.setValue(' + firstInvalidStep + ')');
+                const currentStepComponent = dmx.app.find('current_step');
+                currentStepComponent.set('value', firstInvalidStep);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
-            return;
+            return false;
         }
-        
-        // Remove was-validated class if valid
+
         form.classList.remove('was-validated');
-        console.log('Formulário enviado!');
-        console.log('Form data:', dmx.parse('form_data.value'));
-        // Aqui você pode enviar os dados para o servidor
+        return true;
     }
+
+    // Handle form submission
+    document.getElementById('criar_conta_form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (validateAllFields()) {
+            const formDataComponent = dmx.app.find('form_data');
+            const formData = formDataComponent.data.value;
+            
+            // Collect formatted data from masked fields
+            formData.cnpj = document.getElementById('cnpj').value;
+            formData.whatsapp = document.getElementById('whatsapp').value;
+            formData.cep = document.getElementById('cep').value;
+            
+            console.log('✅ Formulário válido!');
+            console.log('Dados:', formData);
+            
+            // Here you can send the data to your server
+            // Example:
+            // fetch('/api/criar-conta', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData)
+            // });
+        }
+    });
 
     // Initialize form
     function initializeForm() {
-        // Setup input masks
+        // CNPJ input
         const cnpjInput = document.getElementById('cnpj');
-        const whatsappInput = document.getElementById('whatsapp');
-        const cepInput = document.getElementById('cep');
-
-        if (cnpjInput && !cnpjInput.hasListener) {
+        if (cnpjInput) {
             cnpjInput.addEventListener('input', function (e) {
-                let value = removeNonNumeric(this.value);
-                if (value.length > 14) {
-                    value = value.substring(0, 14);
+                const formatted = maskCNPJ(this.value);
+                this.value = formatted;
+                
+                // Update form data
+                const formDataComponent = dmx.app.find('form_data');
+                if (formDataComponent) {
+                    const formData = formDataComponent.data.value;
+                    formData.cnpj = formatted;
+                    formDataComponent.set('value', formData);
                 }
-                this.value = maskCNPJ(value);
             });
-            cnpjInput.hasListener = true;
         }
 
-        if (whatsappInput && !whatsappInput.hasListener) {
+        // WhatsApp input
+        const whatsappInput = document.getElementById('whatsapp');
+        if (whatsappInput) {
             whatsappInput.addEventListener('input', function (e) {
-                let value = removeNonNumeric(this.value);
-                if (value.length > 11) {
-                    value = value.substring(0, 11);
+                const formatted = maskWhatsApp(this.value);
+                this.value = formatted;
+                
+                // Update form data
+                const formDataComponent = dmx.app.find('form_data');
+                if (formDataComponent) {
+                    const formData = formDataComponent.data.value;
+                    formData.whatsapp = formatted;
+                    formDataComponent.set('value', formData);
                 }
-                this.value = maskWhatsApp(value);
             });
-            whatsappInput.hasListener = true;
         }
 
-        if (cepInput && !cepInput.hasListener) {
+        // CEP input
+        const cepInput = document.getElementById('cep');
+        if (cepInput) {
             cepInput.addEventListener('input', function (e) {
-                let value = removeNonNumeric(this.value);
-                if (value.length > 8) {
-                    value = value.substring(0, 8);
+                const formatted = maskCEP(this.value);
+                this.value = formatted;
+                
+                // Update form data
+                const formDataComponent = dmx.app.find('form_data');
+                if (formDataComponent) {
+                    const formData = formDataComponent.data.value;
+                    formData.cep = formatted;
+                    formDataComponent.set('value', formData);
                 }
-                this.value = maskCEP(value);
             });
-            cepInput.hasListener = true;
         }
 
-        // Update form data when inputs change
+        // Update form data when other inputs change
         const form = document.getElementById('criar_conta_form');
-        if (form && !form.hasDataListener) {
+        if (form) {
             form.addEventListener('input', function (e) {
                 const input = e.target;
-                if (input.name) {
-                    const formData = dmx.parse('form_data.value');
-                    formData[input.name] = input.value;
-                    dmx.parse('form_data.setValue(' + JSON.stringify(formData) + ')');
+                if (input.name && input.name !== 'cnpj' && input.name !== 'whatsapp' && input.name !== 'cep') {
+                    const formDataComponent = dmx.app.find('form_data');
+                    if (formDataComponent) {
+                        const formData = formDataComponent.data.value;
+                        formData[input.name] = input.value;
+                        formDataComponent.set('value', formData);
+                    }
                 }
             }, true);
-            form.hasDataListener = true;
         }
     }
 
